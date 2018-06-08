@@ -92,12 +92,12 @@ var renderMapPin = function (obj) {
 var pinsContainer = map.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 
-var renderPins = function (arr, number) {
-  for (var i = 0; i < number; i++) {
+var renderPins = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
     fragment.appendChild(renderMapPin(arr[i]));
   }
 
   pinsContainer.appendChild(fragment);
 }
 
-renderPins(adArray, 8);
+renderPins(adArray);
