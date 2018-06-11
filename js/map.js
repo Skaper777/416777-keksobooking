@@ -152,8 +152,10 @@ var renderMapCard = function (obj) {
   for (var j = 0; j < obj.offer.photos.length; j++) {
     var photo = document.createElement('img');
     photo.src = obj.offer.photos[j];
-    photo.style.width = '45px';
-    photo.style.height = '40px';
+    photo.classList.add('.popup__photo');
+    photo.alt = 'Фотография жилья';
+    photo.width = 45;
+    photo.height = 40;
     fragment.appendChild(photo);
   };
 
