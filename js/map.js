@@ -12,8 +12,12 @@ var getRandomMassiveElement = function (arr) {
 };
 
 var getRandomLength = function (arr) {
-  arr.length = getRandomValue(0, arr.length);
-  return arr;
+  var newArr = [];
+  for (var i = 0; i <= getRandomValue(1, arr.length); i++) {
+    newArr[i] = arr[i];
+  };
+
+  return newArr;
 };
 
 var getShuffleElements = function (arr) {
@@ -27,17 +31,36 @@ var getShuffleElements = function (arr) {
   return arr;
 };
 
-var titles = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-var types = ['Palace', 'Flat', 'House', 'Bungalo'];
+var titles = ['Большая уютная квартира',
+              'Маленькая неуютная квартира',
+              'Огромный прекрасный дворец',
+              'Маленький ужасный дворец',
+              'Красивый гостевой домик',
+              'Некрасивый негостеприимный домик',
+              'Уютное бунгало далеко от моря',
+              'Неуютное бунгало по колено в воде'];
+var types = ['Palace',
+             'Flat',
+             'House',
+             'Bungalo'];
 var typesLocal = {
-  'flat': 'Квартира',
-  'house': 'Дом',
-  'bungalo': 'Бунгало',
-  'palace': 'Дворец'
+  'Flat': 'Квартира',
+  'House': 'Дом',
+  'Bungalo': 'Бунгало',
+  'Palace': 'Дворец'
 };
-var times = ['12:00', '13:00', '14:00'];
-var features = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var times = ['12:00',
+             '13:00',
+             '14:00'];
+var features = ['wifi',
+                'dishwasher',
+                'parking',
+                'washer',
+                'elevator',
+                'conditioner'];
+var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+              'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+              'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var address = [getRandomValue(300, 900), getRandomValue(130, 630)]
 var adArray = [];
 
@@ -69,7 +92,7 @@ var createAdsArray = function(number) {
     }
   }
 
-  return adArray[i];
+  return adArray;
 }
 
 createAdsArray(8);
@@ -114,6 +137,10 @@ renderPins(adArray);
 var renderMapCard = function (obj) {
   var mapCardTemplate = document.querySelector('template').content;
   var mapCard = mapCardTemplate.cloneNode(true);
+  var fragment = document.createDocumentFragment();
+
+  var popupPhotos = mapCard.querySelector('.popup__photos');
+  var popupFeatures = mapCard.querySelector('.popup__features');
 
   mapCard.querySelector('.popup__title').textContent = obj.offer.title;
   mapCard.querySelector('.popup__text--address').textContent = obj.offer.address;
@@ -125,12 +152,25 @@ var renderMapCard = function (obj) {
   mapCard.querySelector('.popup__avatar').src = obj.author.avatar;
 
   for (var j = 0; j < obj.offer.photos.length; j++) {
-    mapCard.querySelector('.popup__photos').querySelector('.popup__photo').src = obj.offer.photos[j];
+    var photo = document.createElement('img');
+    photo.src = obj.offer.photos[j];
+    photo.style.width = '45px';
+    photo.style.height = '40px';
+    fragment.appendChild(photo);
   };
 
+  popupPhotos.innerHTML = '';
+  popupPhotos.appendChild(fragment);
+
   for (var i = 0; i < obj.offer.features.length; i++) {
-    mapCard.querySelector('.popup__features').querySelector('li').className = '.popup__feature--' + obj.offer.features[i];
+    var feature = document.createElement('li');
+    feature.classList.add('popup__feature');
+    feature.classList.add('popup__feature--' + obj.offer.features[i]);
+    fragment.appendChild(feature);
   };
+
+  popupFeatures.innerHTML = '';
+  popupFeatures.appendChild(fragment);
 
   return mapCard;
 };
