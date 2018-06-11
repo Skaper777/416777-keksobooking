@@ -12,10 +12,8 @@ var getRandomMassiveElement = function (arr) {
 };
 
 var getRandomLength = function (arr) {
-  var newArr = [];
-  for (var i = 0; i <= getRandomValue(1, arr.length); i++) {
-    newArr[i] = arr[i];
-  };
+  var newArr = arr.slice();
+  newArr.length = getRandomValue(1, newArr.length);
 
   return newArr;
 };
