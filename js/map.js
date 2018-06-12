@@ -30,17 +30,17 @@ var getShuffleElements = function (arr) {
 };
 
 var titles = ['Большая уютная квартира',
-              'Маленькая неуютная квартира',
-              'Огромный прекрасный дворец',
-              'Маленький ужасный дворец',
-              'Красивый гостевой домик',
-              'Некрасивый негостеприимный домик',
-              'Уютное бунгало далеко от моря',
-              'Неуютное бунгало по колено в воде'];
+  'Маленькая неуютная квартира',
+  'Огромный прекрасный дворец',
+  'Маленький ужасный дворец',
+  'Красивый гостевой домик',
+  'Некрасивый негостеприимный домик',
+  'Уютное бунгало далеко от моря',
+  'Неуютное бунгало по колено в воде'];
 var types = ['Palace',
-             'Flat',
-             'House',
-             'Bungalo'];
+  'Flat',
+  'House',
+  'Bungalo'];
 var typesLocal = {
   'Flat': 'Квартира',
   'House': 'Дом',
@@ -48,21 +48,21 @@ var typesLocal = {
   'Palace': 'Дворец'
 };
 var times = ['12:00',
-             '13:00',
-             '14:00'];
+  '13:00',
+  '14:00'];
 var features = ['wifi',
-                'dishwasher',
-                'parking',
-                'washer',
-                'elevator',
-                'conditioner'];
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner'];
 var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-              'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-              'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-var address = [getRandomValue(300, 900), getRandomValue(130, 630)]
+  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var address = [getRandomValue(300, 900), getRandomValue(130, 630)];
 var adArray = [];
 
-var createAdsArray = function(number) {
+var createAdsArray = function (number) {
   for (var i = 0; i < number; i++) {
     adArray[i] = {
       author: {
@@ -87,15 +87,15 @@ var createAdsArray = function(number) {
         x: getRandomValue(300, 900),
         y: getRandomValue(130, 630)
       }
-    }
+    };
   }
 
   return adArray;
-}
+};
 
 createAdsArray(8);
 
-//---------------2---------------//
+// ---------------2--------------- //
 
 var renderMapPin = function (obj) {
   var PIN_WIDTH = 40;
@@ -126,11 +126,11 @@ var renderPins = function (arr) {
   }
 
   pinsContainer.appendChild(fragment);
-}
+};
 
 renderPins(adArray);
 
-//-------------3-------------//
+// -------------3------------- //
 
 var renderMapCard = function (obj) {
   var mapCardTemplate = document.querySelector('template').content;
@@ -157,7 +157,7 @@ var renderMapCard = function (obj) {
     photo.width = 45;
     photo.height = 40;
     fragment.appendChild(photo);
-  };
+  }
 
   popupPhotos.innerHTML = '';
   popupPhotos.appendChild(fragment);
@@ -167,7 +167,7 @@ var renderMapCard = function (obj) {
     feature.classList.add('popup__feature');
     feature.classList.add('popup__feature--' + obj.offer.features[i]);
     fragment.appendChild(feature);
-  };
+  }
 
   popupFeatures.innerHTML = '';
   popupFeatures.appendChild(fragment);
