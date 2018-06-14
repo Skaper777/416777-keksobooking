@@ -284,7 +284,6 @@ var showCard = function (parentElement, obj) {
 
   var mapFilters = map.querySelector('.map__filters-container');
   var mapAd = renderMapCard(obj);
-  map.insertBefore(mapAd, mapFilters);
 
   parentElement.insertBefore(mapAd, mapFilters);
 };
