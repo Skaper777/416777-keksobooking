@@ -143,7 +143,7 @@ var renderPins = function (arr) {
 // -------------3------------- //
 
 var renderMapCard = function (obj) {
-  var mapCardTemplate = document.querySelector('template').content;
+  var mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
   var mapCard = mapCardTemplate.cloneNode(true);
   var fragment = document.createDocumentFragment();
 
