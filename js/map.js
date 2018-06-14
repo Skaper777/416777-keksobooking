@@ -1,7 +1,6 @@
 'use strict';
 
 var map = document.querySelector('.map');
-// map.classList.remove('map--faded');
 
 var getRandomValue = function (min, max) {
   return Math.round((Math.random() * (max - min)) + min);
@@ -195,7 +194,6 @@ var renderMapCard = function (obj) {
 /* -----------4------------ */
 
 var mainPin = map.querySelector('.map__pin--main');
-var mapPins = map.querySelector('.map__pins');
 var MAINPIN_WIDTH = 65;
 var MAINPIN_HEIGHT = 65;
 
@@ -258,7 +256,7 @@ var mainMouseHandler = function (evt) {
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
 
-    mapPins.removeEventListener('mousemove', onMouseMove);
+    mainPin.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
 
     map.classList.remove('map--faded');
@@ -270,7 +268,7 @@ var mainMouseHandler = function (evt) {
     }
   };
 
-  mapPins.addEventListener('mousemove', onMouseMove);
+  mainPin.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 };
 
