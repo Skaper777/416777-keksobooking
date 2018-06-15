@@ -194,8 +194,6 @@ var renderMapCard = function (obj) {
 /* -----------4------------ */
 
 var mainPin = map.querySelector('.map__pin--main');
-var MAINPIN_WIDTH = 65;
-var MAINPIN_HEIGHT = 65;
 
 var adForm = document.querySelector('.ad-form');
 var formElement = adForm.querySelectorAll('.ad-form__element');
@@ -224,55 +222,36 @@ var closePopup = function () {
   popupClose.removeEventListener('keydown', closeEnterHandler);
 };
 
-var mainMouseHandler = function (evt) {
-  evt.preventDefault();
+var mainPinCenterX = Math.round(mainPin.offsetWidth / 2);
+var mainPinCenterY = Math.round(mainPin.offsetHeight / 2);
 
-  var startCoords = {
-    x: evt.clientX,
-    y: evt.clientY
-  };
-
-  var onMouseMove = function (moveEvt) {
-    moveEvt.preventDefault();
-
-    if (startCoords.y >= 100 && startCoords.y <= 500) {
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-    }
-
-    mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
-    mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-
-    startCoords = {
-      x: moveEvt.clientX,
-      y: moveEvt.clientY
-    };
-
-    addressField.value = 'x: ' + (startCoords.x + (MAINPIN_WIDTH / 2)) + ', y: ' + (startCoords.y + MAINPIN_HEIGHT);
-  };
-
-  var onMouseUp = function (upEvt) {
-    upEvt.preventDefault();
-
-    mainPin.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    renderPins(adArray);
-
-    for (var i = 0; i < formElement.length; i++) {
-      formElement[i].removeAttribute('disabled');
-    }
-  };
-
-  mainPin.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
+var startCoords = {
+  x: mainPin.offsetLeft + mainPinCenterX,
+  y: mainPin.offsetTop + mainPinCenterY
 };
 
-mainPin.addEventListener('mousedown', mainMouseHandler);
+var getAddress = function (x, y) {
+  addressField.value = x + ', ' + y;
+  return addressField.value;
+};
+
+getAddress(startCoords.x, startCoords.y);
+
+var onMouseUp = function (upEvt) {
+  upEvt.preventDefault();
+
+  renderPins(adArray);
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+
+  for (var i = 0; i < formElement.length; i++) {
+    formElement[i].removeAttribute('disabled');
+  }
+
+  mainPin.removeEventListener('mouseup', onMouseUp);
+};
+
+mainPin.addEventListener('mouseup', onMouseUp);
 
 var showCard = function (parentElement, obj) {
   var card = parentElement.querySelector('.map__card');
