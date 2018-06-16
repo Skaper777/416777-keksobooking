@@ -1,7 +1,6 @@
 'use strict';
 
 var map = document.querySelector('.map');
-map.classList.remove('map--faded');
 
 var getRandomValue = function (min, max) {
   return Math.round((Math.random() * (max - min)) + min);
@@ -62,6 +61,9 @@ var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
 var address = [getRandomValue(300, 900), getRandomValue(130, 630)];
 var adArray = [];
 
+var ENTER = 13;
+var ESC = 27;
+
 var createAdsArray = function (number) {
   for (var i = 0; i < number; i++) {
     adArray[i] = {
@@ -97,7 +99,7 @@ createAdsArray(8);
 
 // ---------------2--------------- //
 
-var renderMapPin = function (obj) {
+var renderMapPin = function (obj, objIndex) {
   var PIN_WIDTH = 40;
   var PIN_HEIGTH = 40;
   var btn = document.createElement('button');
@@ -113,6 +115,16 @@ var renderMapPin = function (obj) {
   img.alt = obj.offer.title;
   btn.appendChild(img);
 
+  btn.addEventListener('click', function () {
+    showCard(map, adArray[objIndex]);
+  });
+
+  btn.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === ENTER) {
+      showCard(map, adArray[objIndex]);
+    }
+  });
+
   return btn;
 };
 
@@ -122,23 +134,23 @@ var renderPins = function (arr) {
   var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < arr.length; i++) {
-    fragment.appendChild(renderMapPin(arr[i]));
+    fragment.appendChild(renderMapPin(arr[i], i));
   }
 
   pinsContainer.appendChild(fragment);
 };
 
-renderPins(adArray);
-
 // -------------3------------- //
 
 var renderMapCard = function (obj) {
-  var mapCardTemplate = document.querySelector('template').content;
+  var mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
   var mapCard = mapCardTemplate.cloneNode(true);
   var fragment = document.createDocumentFragment();
 
   var popupPhotos = mapCard.querySelector('.popup__photos');
   var popupFeatures = mapCard.querySelector('.popup__features');
+
+  var popupClose = mapCard.querySelector('.popup__close');
 
   mapCard.querySelector('.popup__title').textContent = obj.offer.title;
   mapCard.querySelector('.popup__text--address').textContent = obj.offer.address;
@@ -172,9 +184,83 @@ var renderMapCard = function (obj) {
   popupFeatures.innerHTML = '';
   popupFeatures.appendChild(fragment);
 
+  popupClose.addEventListener('click', closePopup);
+  popupClose.addEventListener('keydown', closeEscHandler);
+  popupClose.addEventListener('keydown', closeEnterHandler);
+
   return mapCard;
 };
 
-var mapFilters = map.querySelector('.map__filters-container');
-var mapAd = renderMapCard(adArray[0]);
-map.insertBefore(mapAd, mapFilters);
+/* -----------4------------ */
+
+var mainPin = map.querySelector('.map__pin--main');
+
+var adForm = document.querySelector('.ad-form');
+var formElement = adForm.querySelectorAll('.ad-form__element');
+
+var addressField = document.querySelector('#address');
+
+var closeEscHandler = function (evt) {
+  if (evt.keyCode === ESC) {
+    closePopup();
+  }
+};
+
+var closeEnterHandler = function (evt) {
+  if (evt.keyCode === ENTER) {
+    closePopup();
+  }
+};
+
+var closePopup = function () {
+  var popup = map.querySelector('.map__card');
+  var popupClose = popup.querySelector('.popup__close');
+
+  map.removeChild(popup);
+  document.removeEventListener('keydown', closeEscHandler);
+  popupClose.removeEventListener('click', closePopup);
+  popupClose.removeEventListener('keydown', closeEnterHandler);
+};
+
+var mainPinCenterX = Math.round(mainPin.offsetWidth / 2);
+var mainPinCenterY = Math.round(mainPin.offsetHeight / 2);
+
+var startCoords = {
+  x: mainPin.offsetLeft + mainPinCenterX,
+  y: mainPin.offsetTop + mainPinCenterY
+};
+
+var getAddress = function (x, y) {
+  addressField.value = x + ', ' + y;
+  return addressField.value;
+};
+
+getAddress(startCoords.x, startCoords.y);
+
+var onMouseUp = function (upEvt) {
+  upEvt.preventDefault();
+
+  renderPins(adArray);
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+
+  for (var i = 0; i < formElement.length; i++) {
+    formElement[i].removeAttribute('disabled');
+  }
+
+  mainPin.removeEventListener('mouseup', onMouseUp);
+};
+
+mainPin.addEventListener('mouseup', onMouseUp);
+
+var showCard = function (parentElement, obj) {
+  var card = parentElement.querySelector('.map__card');
+  if (card) {
+    closePopup();
+  }
+
+  var mapFilters = map.querySelector('.map__filters-container');
+  var mapAd = renderMapCard(obj);
+
+  parentElement.insertBefore(mapAd, mapFilters);
+};
