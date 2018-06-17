@@ -36,19 +36,29 @@ var titles = ['Большая уютная квартира',
   'Некрасивый негостеприимный домик',
   'Уютное бунгало далеко от моря',
   'Неуютное бунгало по колено в воде'];
-var types = ['Palace',
-  'Flat',
-  'House',
-  'Bungalo'];
+
+var type = document.querySelector('#type');
+var valueOfType = ['flat', 'bungalo', 'house', 'palace'];
+
+var price = document.querySelector('#price');
+var valueOfPrice = ['1000', '0', '5000', '10000'];
+
+var rooms = document.querySelector('select[name="rooms"]');
+
+var capacity = document.querySelector('select[name="capacity"]');
+
+var timeIn = document.querySelector('#timein');
+var valueOfTimeIn = ['12:00', '13:00', '14:00'];
+
+var timeOut = document.querySelector('#timeout');
+var valueOfTimeOut = ['12:00', '13:00', '14:00'];
+
 var typesLocal = {
   'Flat': 'Квартира',
   'House': 'Дом',
   'Bungalo': 'Бунгало',
   'Palace': 'Дворец'
 };
-var times = ['12:00',
-  '13:00',
-  '14:00'];
 var features = ['wifi',
   'dishwasher',
   'parking',
@@ -75,11 +85,11 @@ var createAdsArray = function (number) {
         title: titles[i],
         address: address.toString(),
         price: getRandomValue(1000, 1000000),
-        type: getRandomMassiveElement(types),
+        type: getRandomMassiveElement(valueOfType),
         rooms: getRandomValue(1, 5),
         guests: getRandomValue(1, 100),
-        checkin: getRandomMassiveElement(times),
-        checkout: getRandomMassiveElement(times),
+        checkin: getRandomMassiveElement(valueOfTimeIn),
+        checkout: getRandomMassiveElement(valueOfTimeOut),
         features: getRandomLength(features),
         description: '',
         photos: getShuffleElements(photos)
@@ -191,7 +201,7 @@ var renderMapCard = function (obj) {
   return mapCard;
 };
 
-/* -----------4------------ */
+/* -----------4.1------------ */
 
 var mainPin = map.querySelector('.map__pin--main');
 
@@ -264,3 +274,49 @@ var showCard = function (parentElement, obj) {
 
   parentElement.insertBefore(mapAd, mapFilters);
 };
+
+/* ------------- 4.2 ------------ */
+
+var synchronizeFields = function (element1, element2, values1, values2, callback) {
+  var index = values1.indexOf(element1.value);
+  callback(element2, values2[index]);
+};
+
+var synch = function (element, value) {
+  element.value = value;
+};
+
+var synchWithMin = function (element, value) {
+  element.min = value;
+  element.value = value;
+};
+
+var onSynchTypes = function () {
+  synchronizeFields(type, price, valueOfType, valueOfPrice, synchWithMin);
+};
+
+var onSynchTime = function (e) {
+  var syncField = e.target === timeIn ? timeOut : timeIn;
+  synchronizeFields(e.target, syncField, valueOfTimeIn, valueOfTimeOut, synch);
+};
+
+var onSynchRooms = function () {
+  var value = (rooms.value === '100') ? '0' : rooms.value;
+  for (var i = 0; i < capacity.children.length; i++) {
+    if (capacity.children[i].value > value) {
+      capacity.children[i].style.display = 'none';
+    } else {
+      capacity.children[i].style.display = 'initial';
+    }
+
+    if (capacity.children[i].value === '0') {
+      capacity.children[i].style.display = (value === '0') ? 'initial' : 'none';
+      capacity.selectedIndex = (value === '0') ? 3 : 2;
+    }
+  }
+};
+
+type.addEventListener('change', onSynchTypes);
+rooms.addEventListener('change', onSynchRooms);
+timeIn.addEventListener('change', onSynchTime);
+timeOut.addEventListener('change', onSynchTime);
