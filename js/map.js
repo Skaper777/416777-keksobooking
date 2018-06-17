@@ -254,22 +254,22 @@ var mainPinHandler = function (evt) {
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
 
+    var shift = {
+      x: startCoords.x - moveEvt.pageX,
+      y: startCoords.y - moveEvt.pageY
+    };
+
+    startCoords = {
+      x: moveEvt.pageX,
+      y: moveEvt.pageY
+    };
+
     if (startCoords.y >= Y_ROOF && startCoords.y <= Y_FLOOR) {
-      var shift = {
-        x: startCoords.x - moveEvt.pageX,
-        y: startCoords.y - moveEvt.pageY
-      };
-
-      startCoords = {
-        x: moveEvt.pageX,
-        y: moveEvt.pageY
-      };
-
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-
-      getAddress(startCoords.x, startCoords.y);
     }
+
+    getAddress(startCoords.x, startCoords.y);
   };
 
   var onMouseUp = function (upEvt) {
