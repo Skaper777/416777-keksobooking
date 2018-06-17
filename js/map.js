@@ -210,6 +210,9 @@ var formElement = adForm.querySelectorAll('.ad-form__element');
 
 var addressField = document.querySelector('#address');
 
+var Y_ROOF = 130;
+var Y_FLOOR = 630;
+
 var closeEscHandler = function (evt) {
   if (evt.keyCode === ESC) {
     closePopup();
@@ -232,36 +235,63 @@ var closePopup = function () {
   popupClose.removeEventListener('keydown', closeEnterHandler);
 };
 
-var mainPinCenterX = Math.round(mainPin.offsetWidth / 2);
-var mainPinCenterY = Math.round(mainPin.offsetHeight / 2);
-
-var startCoords = {
-  x: mainPin.offsetLeft + mainPinCenterX,
-  y: mainPin.offsetTop + mainPinCenterY
-};
+// var mainPinX = Math.round(mainPin.offsetWidth / 2);
+// var mainPinY = Math.round(mainPin.offsetHeight);
 
 var getAddress = function (x, y) {
   addressField.value = x + ', ' + y;
   return addressField.value;
 };
 
-getAddress(startCoords.x, startCoords.y);
+var mainPinHandler = function (evt) {
+  evt.preventDefault();
 
-var onMouseUp = function (upEvt) {
-  upEvt.preventDefault();
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
 
-  renderPins(adArray);
-  map.classList.remove('map--faded');
-  adForm.classList.remove('ad-form--disabled');
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
 
-  for (var i = 0; i < formElement.length; i++) {
-    formElement[i].removeAttribute('disabled');
-  }
+    if (startCoords.y >= Y_ROOF && startCoords.y <= Y_FLOOR) {
+      var shift = {
+        x: startCoords.x - moveEvt.pageX,
+        y: startCoords.y - moveEvt.pageY
+      };
 
-  mainPin.removeEventListener('mouseup', onMouseUp);
+      startCoords = {
+        x: moveEvt.pageX,
+        y: moveEvt.pageY
+      };
+
+      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+
+      getAddress(startCoords.x, startCoords.y);
+    }
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    renderPins(adArray);
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+
+    for (var i = 0; i < formElement.length; i++) {
+      formElement[i].removeAttribute('disabled');
+    }
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
 };
 
-mainPin.addEventListener('mouseup', onMouseUp);
+mainPin.addEventListener('mousedown', mainPinHandler);
 
 var showCard = function (parentElement, obj) {
   var card = parentElement.querySelector('.map__card');
