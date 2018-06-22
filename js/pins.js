@@ -1,6 +1,18 @@
 'use strict';
 
 (function () {
+  window.mapPins = {
+    renderPins: function (arr) {
+      var fragment = document.createDocumentFragment();
+
+      for (var i = 0; i < arr.length; i++) {
+        fragment.appendChild(renderMapPin(arr[i], i));
+      }
+
+      pinsContainer.appendChild(fragment);
+    }
+  };
+
   var pins;
   var pin;
 
@@ -24,26 +36,16 @@
     btn.appendChild(img);
 
     btn.addEventListener('click', function () {
-      window.ads.showCard(window.map.map, window.data.adArray[objIndex]);
+      window.ads.showCard(window.map.map, window.data[objIndex]);
     });
 
     btn.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === window.data.ENTER) {
-        window.ads.showCard(window.map.map, window.data.adArray[objIndex]);
+      if (evt.keyCode === window.ads.ENTER) {
+        window.ads.showCard(window.map.map, window.data[objIndex]);
       }
     });
 
     return btn;
-  };
-
-  var renderPins = function (arr) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < arr.length; i++) {
-      fragment.appendChild(renderMapPin(arr[i], i));
-    }
-
-    pinsContainer.appendChild(fragment);
   };
 
   var mainPinHandler = function (evt) {
@@ -89,7 +91,8 @@
     }
 
     if (!pin) {
-      renderPins(window.data.adArray);
+      window.backend.download(window.mapPins.renderPins, window.errorHandler);
+      // renderPins(window.data.adArray);
     }
     window.map.activateMap();
     window.form.getAddress(startCoords.x, startCoords.y);
