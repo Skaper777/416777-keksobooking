@@ -66,5 +66,5 @@
   window.form.timeIn.addEventListener('change', onSynchTime);
   window.form.timeOut.addEventListener('change', onSynchTime);
 
-  window.form.adForm.addEventListener('submit', window.onSuccessHandler, window.onErrorHandler);
+  window.form.adForm.addEventListener('submit', window.onSuccessHandler);
 })();

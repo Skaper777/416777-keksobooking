@@ -9,5 +9,5 @@
     return window.data;
   };
 
-  window.backend.download(onSuccessHandlerObj, window.errorHandler);
+  window.backend.download(onSuccessHandlerObj, window.onErrorHandler);
 })();

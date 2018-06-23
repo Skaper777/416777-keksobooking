@@ -11,7 +11,7 @@
       if (xhr.status === 200) {
         onLoad(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Статус ответа: ' + 'ошибка ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
@@ -48,19 +48,31 @@
   window.onSuccessHandler = function (evt) {
     window.backend.upload(new FormData(window.form.adForm), function () {
       window.form.adForm.reset();
-    });
+    }, window.onErrorHandler);
 
     evt.preventDefault();
   };
 
   window.onErrorHandler = function (errorMessage) {
-    var message = document.createElement('div');
-    message.style = 'z-index: 10; width: 400px; height: 200px; margin: 0 auto; text-align: center;';
-    message.style.position = 'absolute';
-    message.style.left = '50%';
-    message.style.top = '50%';
+    var messageBlock = document.createElement('div');
+    var message = document.createElement('p');
+    var okButton = document.createElement('button');
+
+    messageBlock.style = 'z-index: 10; width: 300px; height: 100px; margin: 0; text-align: center; background-color: white; border: 2px solid red';
+    messageBlock.style.position = 'fixed';
+    messageBlock.style.left = '40%';
+    messageBlock.style.top = '50%';
 
     message.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', message);
+    okButton.textContent = 'OK';
+
+    messageBlock.insertAdjacentElement('afterbegin', okButton);
+    messageBlock.insertAdjacentElement('afterbegin', message);
+    document.body.insertAdjacentElement('afterbegin', messageBlock);
+
+    okButton.addEventListener('click', function () {
+      document.body.removeChild(messageBlock);
+      okButton.removeEventListener('click');
+    });
   };
 })();
