@@ -37,25 +37,25 @@
     mapCard.querySelector('.popup__description').textContent = obj.offer.description;
     mapCard.querySelector('.popup__avatar').src = obj.author.avatar;
 
-    for (var j = 0; j < obj.offer.photos.length; j++) {
-      var photo = document.createElement('img');
-      photo.src = obj.offer.photos[j];
+    obj.offer.photos.forEach(function (photo, i) {
+      photo = document.createElement('img');
+      photo.src = obj.offer.photos[i];
       photo.classList.add('popup__photo');
       photo.alt = 'Фотография жилья';
       photo.width = 45;
       photo.height = 40;
       fragment.appendChild(photo);
-    }
+    });
 
     popupPhotos.innerHTML = '';
     popupPhotos.appendChild(fragment);
 
-    for (var i = 0; i < obj.offer.features.length; i++) {
-      var feature = document.createElement('li');
+    obj.offer.features.forEach(function (feature, j) {
+      feature = document.createElement('li');
       feature.classList.add('popup__feature');
-      feature.classList.add('popup__feature--' + obj.offer.features[i]);
+      feature.classList.add('popup__feature--' + obj.offer.features[j]);
       fragment.appendChild(feature);
-    }
+    });
 
     popupFeatures.innerHTML = '';
     popupFeatures.appendChild(fragment);

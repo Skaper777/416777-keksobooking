@@ -4,18 +4,27 @@
   window.mapPins = {
     renderPins: function (arr) {
       var fragment = document.createDocumentFragment();
+      var slicedArr = arr.slice(0, NUMBER_OF_PINS);
 
-      for (var i = 0; i < arr.length; i++) {
+      slicedArr.forEach(function (array, i) {
         fragment.appendChild(renderMapPin(arr[i], i));
-      }
+      });
 
       pinsContainer.appendChild(fragment);
+    },
+
+    removePins: function () {
+      var pins = pinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+      pins.forEach(function (pin, j) {
+        pinsContainer.removeChild(pins[j]);
+      });
     }
   };
 
-  var pins;
+  var NUMBER_OF_PINS = 5;
   var pin;
-
+  var pins;
   var mainPin = document.querySelector('.map__pin--main');
   var pinsContainer = document.querySelector('.map__pins');
 
@@ -92,7 +101,6 @@
 
     if (!pin) {
       window.backend.download(window.mapPins.renderPins, window.errorHandler);
-      // renderPins(window.data.adArray);
     }
     window.map.activateMap();
     window.form.getAddress(startCoords.x, startCoords.y);
