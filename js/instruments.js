@@ -28,6 +28,12 @@
       return arr;
     },
 
+    setAttribute: function (selector, attribute) {
+      for (var i = 0; i < selector.length; i++) {
+        selector[i].setAttribute(attribute, 0);
+      }
+    },
+
     removeAttribute: function (selector, attribute) {
       for (var i = 0; i < selector.length; i++) {
         selector[i].removeAttribute(attribute);

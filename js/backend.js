@@ -47,6 +47,12 @@
 
   window.onSuccessHandler = function (evt) {
     window.backend.upload(new FormData(window.form.adForm), function () {
+      if (document.querySelector('.map__card')) {
+        window.ads.closePopup();
+      }
+      window.mapPins.removePins();
+      window.map.deactivateMap();
+      window.mapPins.resetMainPin();
       window.form.adForm.reset();
     }, window.onErrorHandler);
 
@@ -57,6 +63,10 @@
     var messageBlock = document.createElement('div');
     var message = document.createElement('p');
     var okButton = document.createElement('button');
+    var closeError = function () {
+      document.body.removeChild(messageBlock);
+      okButton.removeEventListener('click', closeError);
+    };
 
     messageBlock.style = 'z-index: 10; width: 300px; height: 100px; margin: 0; text-align: center; background-color: white; border: 2px solid red';
     messageBlock.style.position = 'fixed';
@@ -70,9 +80,6 @@
     messageBlock.insertAdjacentElement('afterbegin', message);
     document.body.insertAdjacentElement('afterbegin', messageBlock);
 
-    okButton.addEventListener('click', function () {
-      document.body.removeChild(messageBlock);
-      okButton.removeEventListener('click');
-    });
+    okButton.addEventListener('click', closeError);
   };
 })();
