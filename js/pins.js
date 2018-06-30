@@ -31,7 +31,6 @@
   var pinsContainer = document.querySelector('.map__pins');
   var pins = pinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
   var mainPin = document.querySelector('.map__pin--main');
-
   var mainPinDef = {
     x: mainPin.offsetX,
     y: mainPin.offsetY
