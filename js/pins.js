@@ -89,7 +89,7 @@
         mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
       }
 
-      window.form.getAddress(startCoords.x - 350, startCoords.y);
+      window.form.getAddress(startCoords.x, startCoords.y);
     };
 
     var onMouseUp = function (upEvt) {
@@ -109,7 +109,7 @@
       window.backend.download(window.mapPins.renderPins, window.errorHandler);
     }
     window.map.activateMap();
-    window.form.getAddress(startCoords.x - 350, startCoords.y);
+    window.form.getAddress(startCoords.x, startCoords.y);
 
     window.map.map.addEventListener('mousemove', onMouseMove);
     window.map.map.addEventListener('mouseup', onMouseUp);

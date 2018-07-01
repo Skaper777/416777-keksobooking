@@ -34,6 +34,7 @@
     }
   };
 
+  var formResetButton = document.querySelector('.ad-form__reset');
   var addressField = document.querySelector('#address');
 
   var onSynchTypes = function () {
