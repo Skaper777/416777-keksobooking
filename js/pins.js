@@ -21,19 +21,22 @@
     },
 
     resetMainPin: function () {
-      mainPin.style.left = mainPinDef.x + 'px';
-      mainPin.style.top = mainPinDef.y + 'px';
+      mainPin.style.left = startCoords.x + 'px';
+      mainPin.style.top = startCoords.y + 'px';
     }
   };
 
   var NUMBER_OF_PINS = 5;
+  var MAIN_PIN_WIDTH = 60;
+  var MAIN_PIN_HEIGHT = 60;
   var pin;
   var pinsContainer = document.querySelector('.map__pins');
   var pins = pinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
   var mainPin = document.querySelector('.map__pin--main');
-  var mainPinDef = {
-    x: mainPin.offsetX,
-    y: mainPin.offsetY
+
+  var startCoords = {
+    x: mainPin.offsetLeft + MAIN_PIN_WIDTH / 2,
+    y: mainPin.offsetTop + MAIN_PIN_HEIGHT
   };
 
   var renderMapPin = function (obj, objIndex) {
@@ -68,17 +71,12 @@
   var mainPinHandler = function (evt) {
     evt.preventDefault();
 
-    var startCoords = {
-      x: mainPinDef.x,
-      y: mainPinDef.y
-    };
-
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
-        x: startCoords.x - moveEvt.pageX,
-        y: startCoords.y - moveEvt.pageY
+        x: moveEvt.pageX - startCoords.x,
+        y: moveEvt.pageY - startCoords.y
       };
 
       startCoords = {
@@ -91,14 +89,14 @@
         mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
       }
 
-      window.form.getAddress(startCoords.x, startCoords.y);
+      window.form.getAddress(startCoords.x - 350, startCoords.y);
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
       window.map.map.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      window.map.map.removeEventListener('mouseup', onMouseUp);
     };
 
     pins = pinsContainer.querySelectorAll('.map__pin');
@@ -111,12 +109,12 @@
       window.backend.download(window.mapPins.renderPins, window.errorHandler);
     }
     window.map.activateMap();
-    window.form.getAddress(startCoords.x, startCoords.y);
+    window.form.getAddress(startCoords.x - 350, startCoords.y);
 
     window.map.map.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    window.map.map.addEventListener('mouseup', onMouseUp);
   };
 
-  window.form.getAddress(mainPinDef.x, mainPinDef.y);
+  window.form.getAddress(startCoords.x, startCoords.y);
   mainPin.addEventListener('mousedown', mainPinHandler);
 })();
