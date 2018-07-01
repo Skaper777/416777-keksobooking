@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var MIDDLE_MIN_PRICE = 10000;
+  var MIDDLE_MAX_PRICE = 50000;
+  var ANY_VALUE = 'any';
+
   var mapFilters = document.querySelector('.map__filters');
   var houseFeatures = mapFilters.querySelectorAll('.map__checkbox');
 
@@ -8,10 +12,6 @@
   var housePrice = mapFilters.querySelector('#housing-price');
   var houseRooms = mapFilters.querySelector('#housing-rooms');
   var houseGuests = mapFilters.querySelector('#housing-guests');
-
-  var MIDDLE_MIN_PRICE = 10000;
-  var MIDDLE_MAX_PRICE = 50000;
-  var ANY_VALUE = 'any';
 
   var houseTypeFilter = function (obj) {
     return obj.offer.type === houseType.value || houseType.value === ANY_VALUE;
@@ -49,6 +49,9 @@
   };
 
   var updatePins = function () {
+    if (document.querySelector('.map__card')) {
+      window.ads.closePopup();
+    }
     var slicedData = window.data.slice();
     var filteredData = slicedData.filter(houseTypeFilter)
                                  .filter(housePriceFilter)

@@ -6,7 +6,6 @@
     valueOfType: ['flat', 'bungalo', 'house', 'palace'],
 
     price: document.querySelector('#price'),
-    valueOfPrice: ['1000', '0', '5000', '10000'],
 
     rooms: document.querySelector('select[name="rooms"]'),
 
@@ -28,17 +27,64 @@
     adForm: document.querySelector('.ad-form'),
     formElement: document.querySelectorAll('.ad-form__element'),
 
-    getAddress: function (x, y) {
-      addressField.value = x + ', ' + y;
-      return addressField.value;
+    getAddress: function () {
+      addressField.value = (window.mapPins.mainPin.offsetLeft
+        + Math.round(window.mapPins.mainPin.offsetWidth / 2)) + ', '
+        + (window.mapPins.mainPin.offsetTop + Math.round(window.mapPins.mainPin.offsetHeight));
     }
   };
 
   var formResetButton = document.querySelector('.ad-form__reset');
+  var formReset = function () {
+    if (document.querySelector('.map__card')) {
+      window.ads.closePopup();
+    }
+    window.mapPins.removePins();
+    window.map.deactivateMap();
+    window.mapPins.resetMainPin();
+    window.form.adForm.reset();
+  };
+
   var addressField = document.querySelector('#address');
 
+  var valuesOfTypes = {
+    'flat': {
+      min: '1000',
+      placeholder: '1000'
+    },
+    'house': {
+      min: '5000',
+      placeholder: '5000'
+    },
+    'palace': {
+      min: '10000',
+      placeholder: '10000'
+    },
+    'bungalo': {
+      min: '0',
+      placeholder: '0'
+    }
+  };
+
   var onSynchTypes = function () {
-    window.instruments.synchronizeFields(window.form.type, window.form.price, window.form.valueOfType, window.form.valueOfPrice, window.instruments.synchWithMin);
+    switch (window.form.type.value) {
+      case 'flat':
+        window.form.price.min = valuesOfTypes.flat.min;
+        window.form.price.placeholder = valuesOfTypes.flat.placeholder;
+        return;
+      case 'house':
+        window.form.price.min = valuesOfTypes.house.min;
+        window.form.price.placeholder = valuesOfTypes.house.placeholder;
+        return;
+      case 'palace':
+        window.form.price.min = valuesOfTypes.palace.min;
+        window.form.price.placeholder = valuesOfTypes.palace.placeholder;
+        return;
+      default:
+        window.form.price.min = valuesOfTypes.bungalo.min;
+        window.form.price.placeholder = valuesOfTypes.bungalo.placeholder;
+        return;
+    }
   };
 
   var onSynchTime = function (e) {
@@ -62,6 +108,7 @@
     }
   };
 
+  formResetButton.addEventListener('click', formReset);
   window.form.type.addEventListener('change', onSynchTypes);
   window.form.rooms.addEventListener('change', onSynchRooms);
   window.form.timeIn.addEventListener('change', onSynchTime);

@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var PHOTO_WIDTH = 45;
+  var PHOTO_HEIGHT = 40;
+
   window.ads = {
     ENTER: 13,
     ESC: 27,
@@ -52,8 +55,8 @@
       photo.src = obj.offer.photos[i];
       photo.classList.add('popup__photo');
       photo.alt = 'Фотография жилья';
-      photo.width = 45;
-      photo.height = 40;
+      photo.width = PHOTO_WIDTH;
+      photo.height = PHOTO_HEIGHT;
       fragment.appendChild(photo);
     });
 
@@ -71,7 +74,7 @@
     popupFeatures.appendChild(fragment);
 
     popupClose.addEventListener('click', window.ads.closePopup);
-    popupClose.addEventListener('keydown', closeEscHandler);
+    document.addEventListener('keydown', closeEscHandler);
     popupClose.addEventListener('keydown', closeEnterHandler);
 
     return mapCard;
