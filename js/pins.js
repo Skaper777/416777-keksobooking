@@ -3,7 +3,7 @@
 (function () {
   var NUMBER_OF_PINS = 5;
 
-  var pin;
+  // var pin;
   var pinsContainer = document.querySelector('.map__pins');
   var pins = pinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
 
@@ -94,24 +94,16 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      window.map.map.removeEventListener('mousemove', onMouseMove);
-      window.map.map.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     };
 
-    pins = pinsContainer.querySelectorAll('.map__pin');
-
-    for (var i = 1; i < pins.length; i++) {
-      pin = pins[i];
-    }
-
-    if (!pin) {
-      window.backend.download(window.mapPins.renderPins, window.errorHandler);
-    }
+    window.backend.download(window.mapPins.renderPins, window.errorHandler);
     window.map.activateMap();
     window.form.getAddress();
 
-    window.map.map.addEventListener('mousemove', onMouseMove);
-    window.map.map.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   };
 
   window.form.getAddress();

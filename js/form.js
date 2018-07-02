@@ -39,8 +39,8 @@
     if (document.querySelector('.map__card')) {
       window.ads.closePopup();
     }
-    window.mapPins.removePins();
     window.map.deactivateMap();
+    window.mapPins.removePins();
     window.mapPins.resetMainPin();
     window.form.adForm.reset();
   };
