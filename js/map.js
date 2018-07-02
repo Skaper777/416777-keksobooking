@@ -1,10 +1,12 @@
 'use strict';
 
 (function () {
+  var map = document.querySelector('.map');
+
   window.map = {
-    map: document.querySelector('.map'),
-    X_BORDER_LEFT: this.map.offsetLeft,
-    X_BORDER_RIGHT: this.map.offsetLeft + this.map.width,
+    map: map,
+    X_BORDER_LEFT: map.offsetLeft,
+    X_BORDER_RIGHT: map.offsetLeft + map.clientWidth,
     Y_ROOF: 130,
     Y_FLOOR: 630,
 

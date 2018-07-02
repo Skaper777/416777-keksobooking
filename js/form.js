@@ -43,6 +43,7 @@
     window.mapPins.removePins();
     window.mapPins.resetMainPin();
     window.form.adForm.reset();
+    window.form.getAddress();
   };
 
   var addressField = document.querySelector('#address');
