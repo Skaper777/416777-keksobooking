@@ -3,8 +3,8 @@
 (function () {
   window.map = {
     map: document.querySelector('.map'),
-    X_BORDER_LEFT: window.map.map.offsetLeft,
-    X_BORDER_RIGHT: window.map.map.offsetLeft + window.map.map.width,
+    X_BORDER_LEFT: this.map.offsetLeft,
+    X_BORDER_RIGHT: this.map.offsetLeft + this.map.width,
     Y_ROOF: 130,
     Y_FLOOR: 630,
 
