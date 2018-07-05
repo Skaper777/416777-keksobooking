@@ -7,9 +7,9 @@
 
     price: document.querySelector('#price'),
 
-    rooms: document.querySelector('select[name="rooms"]'),
+    rooms: document.querySelector('#room_number'),
 
-    capacity: document.querySelector('select[name="capacity"]'),
+    capacity: document.querySelector('#capacity'),
 
     timeIn: document.querySelector('#timein'),
     valueOfTimeIn: ['12:00', '13:00', '14:00'],
@@ -26,16 +26,19 @@
 
     adForm: document.querySelector('.ad-form'),
     formElement: document.querySelectorAll('.ad-form__element'),
+    addressField: document.querySelector('#address'),
 
     getAddress: function () {
-      addressField.value = (window.mapPins.mainPin.offsetLeft
+      this.addressField.value = (window.mapPins.mainPin.offsetLeft
         + Math.round(window.mapPins.mainPin.offsetWidth / 2)) + ', '
         + (window.mapPins.mainPin.offsetTop + Math.round(window.mapPins.mainPin.offsetHeight));
     }
   };
 
   var formResetButton = document.querySelector('.ad-form__reset');
-  var formReset = function () {
+  var formReset = function (evt) {
+    evt.preventDefault();
+
     if (document.querySelector('.map__card')) {
       window.ads.closePopup();
     }
@@ -45,8 +48,6 @@
     window.form.adForm.reset();
     window.form.getAddress();
   };
-
-  var addressField = document.querySelector('#address');
 
   var valuesOfTypes = {
     'flat': {
@@ -94,24 +95,44 @@
   };
 
   var onSynchRooms = function () {
-    var value = (window.form.rooms.value === '100') ? '0' : window.form.rooms.value;
-    for (var i = 0; i < window.form.capacity.children.length; i++) {
-      if (window.form.capacity.children[i].value > value) {
-        window.form.capacity.children[i].style.display = 'none';
-      } else {
-        window.form.capacity.children[i].style.display = 'initial';
-      }
+    var selectedRooms = +(window.form.rooms.value);
+    var selectedCapacity = +(window.form.capacity.value);
+    var message = '';
 
-      if (window.form.capacity.children[i].value === '0') {
-        window.form.capacity.children[i].style.display = (value === '0') ? 'initial' : 'none';
-        window.form.capacity.selectedIndex = (value === '0') ? 3 : 2;
+    switch (selectedRooms) {
+      case (1): {
+        if (selectedCapacity > 1 || selectedCapacity === 0) {
+          message = '1 комната для 1 гостя';
+        }
+        break;
+      }
+      case (2): {
+        if (selectedCapacity > 2 || selectedCapacity === 0) {
+          message = '2 комнаты для 1 гостя или для 2 гостей';
+        }
+        break;
+      }
+      case (3): {
+        if (selectedCapacity > 3 || selectedCapacity === 0) {
+          message = '3 комнаты для 1 гостя или для 2 гостей или для 3 гостей';
+        }
+        break;
+      }
+      case (100): {
+        if (selectedCapacity > 0) {
+          message = '100 комнат не для гостей';
+        }
+        break;
       }
     }
+
+    window.form.capacity.setCustomValidity(message);
   };
 
   formResetButton.addEventListener('click', formReset);
   window.form.type.addEventListener('change', onSynchTypes);
   window.form.rooms.addEventListener('change', onSynchRooms);
+  window.form.capacity.addEventListener('change', onSynchRooms);
   window.form.timeIn.addEventListener('change', onSynchTime);
   window.form.timeOut.addEventListener('change', onSynchTime);
 

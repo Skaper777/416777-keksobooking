@@ -7,8 +7,8 @@
     map: map,
     X_BORDER_LEFT: map.offsetLeft,
     X_BORDER_RIGHT: map.offsetLeft + map.clientWidth,
-    Y_ROOF: 130,
-    Y_FLOOR: 630,
+    Y_ROOF: 80 + window.mapPins.mainPin.offsetHeight,
+    Y_FLOOR: 629 - window.mapPins.mainPin.offsetHeight,
 
     activateMap: function () {
       window.map.map.classList.remove('map--faded');
