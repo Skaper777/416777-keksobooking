@@ -29,9 +29,10 @@
     addressField: document.querySelector('#address'),
 
     getAddress: function () {
-      this.addressField.value = (window.mapPins.mainPin.offsetLeft
-        + Math.round(window.mapPins.mainPin.offsetWidth / 2)) + ', '
-        + (window.mapPins.mainPin.offsetTop + Math.round(window.mapPins.mainPin.offsetHeight));
+      var pinX = parseInt(window.mapPins.mainPin.style.left, 10) + window.map.MAIN_PIN_WIDTH / 2;
+      var pinY = parseInt(window.mapPins.mainPin.style.top, 10) + window.map.MAIN_PIN_HEIGHT / 2;
+
+      this.addressField.value = Math.round(pinX) + ', ' + Math.round(pinY);
     }
   };
 

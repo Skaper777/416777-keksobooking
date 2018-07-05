@@ -4,7 +4,8 @@
   var map = document.querySelector('.map');
   var Y_BORDER_TOP = 130;
   var Y_BORDER_BOTTOM = 630;
-  var OFFSET_OF_TOP = 50;
+  var MAIN_PIN_WIDTH = 65;
+  var MAIN_PIN_HEIGHT = 80;
 
   window.map = {
     map: map,
@@ -12,9 +13,10 @@
     X_BORDER_RIGHT: map.offsetLeft + map.clientWidth,
     Y_BORDER_TOP: Y_BORDER_TOP,
     Y_BORDER_BOTTOM: Y_BORDER_BOTTOM,
-    OFFSET_OF_TOP: OFFSET_OF_TOP,
-    topBorderOfPin: Y_BORDER_TOP + window.mapPins.mainPin.offsetHeight - OFFSET_OF_TOP,
-    bottomDorderOfPin: Y_BORDER_BOTTOM - window.mapPins.mainPin.offsetHeight,
+    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
+    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
+    topBorderOfPin: Y_BORDER_TOP + (MAIN_PIN_HEIGHT / 2),
+    bottomDorderOfPin: Y_BORDER_BOTTOM - (MAIN_PIN_HEIGHT / 2),
 
     activateMap: function () {
       window.map.map.classList.remove('map--faded');
