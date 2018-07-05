@@ -82,7 +82,7 @@
         y: moveEvt.pageY
       };
 
-      if (startCoords.y >= window.map.Y_ROOF && startCoords.y <= window.map.Y_FLOOR && startCoords.x >= window.map.X_BORDER_LEFT && startCoords.x <= window.map.X_BORDER_RIGHT) {
+      if (startCoords.y >= window.map.topBorderOfPin && startCoords.y <= window.map.bottomDorderOfPin && startCoords.x >= window.map.X_BORDER_LEFT && startCoords.x <= window.map.X_BORDER_RIGHT) {
         window.mapPins.mainPin.style.top = (window.mapPins.mainPin.offsetTop - shift.y) + 'px';
         window.mapPins.mainPin.style.left = (window.mapPins.mainPin.offsetLeft - shift.x) + 'px';
       }

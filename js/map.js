@@ -2,13 +2,19 @@
 
 (function () {
   var map = document.querySelector('.map');
+  var Y_BORDER_TOP = 130;
+  var Y_BORDER_BOTTOM = 630;
+  var OFFSET_OF_TOP = 50;
 
   window.map = {
     map: map,
     X_BORDER_LEFT: map.offsetLeft,
     X_BORDER_RIGHT: map.offsetLeft + map.clientWidth,
-    Y_ROOF: 80 + window.mapPins.mainPin.offsetHeight,
-    Y_FLOOR: 629 - window.mapPins.mainPin.offsetHeight,
+    Y_BORDER_TOP: Y_BORDER_TOP,
+    Y_BORDER_BOTTOM: Y_BORDER_BOTTOM,
+    OFFSET_OF_TOP: OFFSET_OF_TOP,
+    topBorderOfPin: Y_BORDER_TOP + window.mapPins.mainPin.offsetHeight - OFFSET_OF_TOP,
+    bottomDorderOfPin: Y_BORDER_BOTTOM - window.mapPins.mainPin.offsetHeight,
 
     activateMap: function () {
       window.map.map.classList.remove('map--faded');
