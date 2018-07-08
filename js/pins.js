@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var mainPin = document.querySelector('.map__pin--main');
   var NUMBER_OF_PINS = 5;
 
   var Y_BORDER_TOP = 130;
@@ -8,8 +9,8 @@
   var X_BORDER_LEFT = 0;
   var X_BORDER_RIGHT = X_BORDER_LEFT + window.map.map.clientWidth;
 
-  var MAIN_PIN_WIDTH = 65;
-  var MAIN_PIN_HEIGHT = 80;
+  var MAIN_PIN_WIDTH = mainPin.clientWidth;
+  var MAIN_PIN_HEIGHT = mainPin.clientHeight;
 
   var PIN_BORDER_TOP = Y_BORDER_TOP - MAIN_PIN_HEIGHT;
   var PIN_BORDER_BOTTOM = Y_BORDER_BOTTOM - MAIN_PIN_HEIGHT;
@@ -18,7 +19,6 @@
 
   var pinsContainer = document.querySelector('.map__pins');
   var pins = pinsContainer.querySelectorAll('.map__pin:not(.map__pin--main)');
-  var mainPin = document.querySelector('.map__pin--main');
 
   var renderPins = function (arr) {
     var fragment = document.createDocumentFragment();
