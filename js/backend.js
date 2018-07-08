@@ -45,6 +45,20 @@
     }
   };
 
+  var successMessage = document.querySelector('.success');
+
+  var closeEscMessageHandler = function (e) {
+    if (e.keycode === window.ads.ESC) {
+      successMessage.classList.add('hidden');
+      document.removeEventListener('keydown', closeEscMessageHandler);
+    }
+  };
+
+  var closeClickMessageHandler = function () {
+    successMessage.classList.add('hidden');
+    document.removeEventListener('click', closeClickMessageHandler);
+  };
+
   window.onSuccessHandler = function (evt) {
     window.backend.upload(new FormData(window.form.adForm), function () {
       if (document.querySelector('.map__card')) {
@@ -55,6 +69,9 @@
       window.mapPins.resetMainPin();
       window.form.adForm.reset();
       window.form.getAddress();
+      successMessage.classList.remove('hidden');
+      document.addEventListener('keydown', closeEscMessageHandler);
+      document.addEventListener('click', closeClickMessageHandler);
     }, window.onErrorHandler);
 
     evt.preventDefault();

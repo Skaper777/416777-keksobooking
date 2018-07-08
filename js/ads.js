@@ -31,7 +31,9 @@
 
   window.ads = {
     showCard: showCard,
-    closePopup: closePopup
+    closePopup: closePopup,
+    ENTER: ENTER,
+    ESC: ESC
   };
 
   var renderMapCard = function (obj) {

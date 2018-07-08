@@ -34,6 +34,7 @@ var getAddress = function () {
 
 (function () {
   window.form = {
+    price: price,
     typesLocal: typesLocal,
     adForm: adForm,
     formElement: formElement,

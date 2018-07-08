@@ -15,6 +15,7 @@
     deactivateMap: function () {
       map.classList.add('map--faded');
       window.form.adForm.classList.add('ad-form--disabled');
+      window.form.price.placeholder = '1000';
       window.instruments.setAttribute(window.form.formElement, 'disabled');
     }
   };
