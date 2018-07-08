@@ -4,31 +4,34 @@
   var PHOTO_WIDTH = 45;
   var PHOTO_HEIGHT = 40;
 
-  window.ads = {
-    ENTER: 13,
-    ESC: 27,
+  var ENTER = 13;
+  var ESC = 27;
 
-    showCard: function (parentElement, obj) {
-      var card = parentElement.querySelector('.map__card');
-      if (card) {
-        window.ads.closePopup();
-      }
-
-      var mapFilters = window.map.map.querySelector('.map__filters-container');
-      var mapAd = renderMapCard(obj);
-
-      parentElement.insertBefore(mapAd, mapFilters);
-    },
-
-    closePopup: function () {
-      var popup = window.map.map.querySelector('.map__card');
-      var popupClose = popup.querySelector('.popup__close');
-
-      window.map.map.removeChild(popup);
-      document.removeEventListener('keydown', closeEscHandler);
-      popupClose.removeEventListener('click', window.ads.closePopup);
-      popupClose.removeEventListener('keydown', closeEnterHandler);
+  var showCard = function (parentElement, obj) {
+    var card = parentElement.querySelector('.map__card');
+    if (card) {
+      window.ads.closePopup();
     }
+
+    var mapFilters = window.map.map.querySelector('.map__filters-container');
+    var mapAd = renderMapCard(obj);
+
+    parentElement.insertBefore(mapAd, mapFilters);
+  };
+
+  var closePopup = function () {
+    var popup = window.map.map.querySelector('.map__card');
+    var popupClose = popup.querySelector('.popup__close');
+
+    window.map.map.removeChild(popup);
+    document.removeEventListener('keydown', closeEscHandler);
+    popupClose.removeEventListener('click', window.ads.closePopup);
+    popupClose.removeEventListener('keydown', closeEnterHandler);
+  };
+
+  window.ads = {
+    showCard: showCard,
+    closePopup: closePopup
   };
 
   var renderMapCard = function (obj) {
@@ -73,7 +76,7 @@
     popupFeatures.innerHTML = '';
     popupFeatures.appendChild(fragment);
 
-    popupClose.addEventListener('click', window.ads.closePopup);
+    popupClose.addEventListener('click', closePopup);
     document.addEventListener('keydown', closeEscHandler);
     popupClose.addEventListener('keydown', closeEnterHandler);
 
@@ -81,14 +84,14 @@
   };
 
   var closeEscHandler = function (evt) {
-    if (evt.keyCode === window.ads.ESC) {
-      window.ads.closePopup();
+    if (evt.keyCode === ESC) {
+      closePopup();
     }
   };
 
   var closeEnterHandler = function (evt) {
-    if (evt.keyCode === window.ads.ENTER) {
-      window.ads.closePopup();
+    if (evt.keyCode === ENTER) {
+      closePopup();
     }
   };
 })();

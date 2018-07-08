@@ -1,39 +1,43 @@
 'use strict';
 
+var type = document.querySelector('#type');
+
+var price = document.querySelector('#price');
+
+var rooms = document.querySelector('#room_number');
+
+var capacity = document.querySelector('#capacity');
+
+var timeIn = document.querySelector('#timein');
+var valueOfTimeIn = ['12:00', '13:00', '14:00'];
+
+var timeOut = document.querySelector('#timeout');
+var valueOfTimeOut = ['12:00', '13:00', '14:00'];
+
+var typesLocal = {
+  'Flat': 'Квартира',
+  'House': 'Дом',
+  'Bungalo': 'Бунгало',
+  'Palace': 'Дворец'
+};
+
+var adForm = document.querySelector('.ad-form');
+var formElement = document.querySelectorAll('.ad-form__element');
+var addressField = document.querySelector('#address');
+
+var getAddress = function () {
+  var pinX = parseInt(window.mapPins.mainPin.style.left, 10) + window.mapPins.MAIN_PIN_WIDTH / 2;
+  var pinY = parseInt(window.mapPins.mainPin.style.top, 10) + window.mapPins.MAIN_PIN_HEIGHT;
+
+  addressField.value = Math.round(pinX) + ', ' + Math.round(pinY);
+};
+
 (function () {
   window.form = {
-    type: document.querySelector('#type'),
-    valueOfType: ['flat', 'bungalo', 'house', 'palace'],
-
-    price: document.querySelector('#price'),
-
-    rooms: document.querySelector('#room_number'),
-
-    capacity: document.querySelector('#capacity'),
-
-    timeIn: document.querySelector('#timein'),
-    valueOfTimeIn: ['12:00', '13:00', '14:00'],
-
-    timeOut: document.querySelector('#timeout'),
-    valueOfTimeOut: ['12:00', '13:00', '14:00'],
-
-    typesLocal: {
-      'Flat': 'Квартира',
-      'House': 'Дом',
-      'Bungalo': 'Бунгало',
-      'Palace': 'Дворец'
-    },
-
-    adForm: document.querySelector('.ad-form'),
-    formElement: document.querySelectorAll('.ad-form__element'),
-    addressField: document.querySelector('#address'),
-
-    getAddress: function () {
-      var pinX = parseInt(window.mapPins.mainPin.style.left, 10) + window.map.MAIN_PIN_WIDTH / 2;
-      var pinY = parseInt(window.mapPins.mainPin.style.top, 10) + window.map.MAIN_PIN_HEIGHT / 2;
-
-      this.addressField.value = Math.round(pinX) + ', ' + Math.round(pinY);
-    }
+    typesLocal: typesLocal,
+    adForm: adForm,
+    formElement: formElement,
+    getAddress: getAddress
   };
 
   var formResetButton = document.querySelector('.ad-form__reset');
@@ -46,8 +50,8 @@
     window.map.deactivateMap();
     window.mapPins.removePins();
     window.mapPins.resetMainPin();
-    window.form.adForm.reset();
-    window.form.getAddress();
+    adForm.reset();
+    getAddress();
   };
 
   var valuesOfTypes = {
@@ -70,34 +74,34 @@
   };
 
   var onSynchTypes = function () {
-    switch (window.form.type.value) {
+    switch (type.value) {
       case 'flat':
-        window.form.price.min = valuesOfTypes.flat.min;
-        window.form.price.placeholder = valuesOfTypes.flat.placeholder;
+        price.min = valuesOfTypes.flat.min;
+        price.placeholder = valuesOfTypes.flat.placeholder;
         return;
       case 'house':
-        window.form.price.min = valuesOfTypes.house.min;
-        window.form.price.placeholder = valuesOfTypes.house.placeholder;
+        price.min = valuesOfTypes.house.min;
+        price.placeholder = valuesOfTypes.house.placeholder;
         return;
       case 'palace':
-        window.form.price.min = valuesOfTypes.palace.min;
-        window.form.price.placeholder = valuesOfTypes.palace.placeholder;
+        price.min = valuesOfTypes.palace.min;
+        price.placeholder = valuesOfTypes.palace.placeholder;
         return;
       default:
-        window.form.price.min = valuesOfTypes.bungalo.min;
-        window.form.price.placeholder = valuesOfTypes.bungalo.placeholder;
+        price.min = valuesOfTypes.bungalo.min;
+        price.placeholder = valuesOfTypes.bungalo.placeholder;
         return;
     }
   };
 
   var onSynchTime = function (e) {
-    var syncField = e.target === window.form.timeIn ? window.form.timeOut : window.form.timeIn;
-    window.instruments.synchronizeFields(e.target, syncField, window.form.valueOfTimeIn, window.form.valueOfTimeOut, window.instruments.synch);
+    var syncField = e.target === timeIn ? timeOut : timeIn;
+    window.instruments.synchronizeFields(e.target, syncField, valueOfTimeIn, valueOfTimeOut, window.instruments.synch);
   };
 
   var onSynchRooms = function () {
-    var selectedRooms = +(window.form.rooms.value);
-    var selectedCapacity = +(window.form.capacity.value);
+    var selectedRooms = +(rooms.value);
+    var selectedCapacity = +(capacity.value);
     var message = '';
 
     switch (selectedRooms) {
@@ -127,15 +131,15 @@
       }
     }
 
-    window.form.capacity.setCustomValidity(message);
+    capacity.setCustomValidity(message);
   };
 
   formResetButton.addEventListener('click', formReset);
-  window.form.type.addEventListener('change', onSynchTypes);
-  window.form.rooms.addEventListener('change', onSynchRooms);
-  window.form.capacity.addEventListener('change', onSynchRooms);
-  window.form.timeIn.addEventListener('change', onSynchTime);
-  window.form.timeOut.addEventListener('change', onSynchTime);
+  type.addEventListener('change', onSynchTypes);
+  rooms.addEventListener('change', onSynchRooms);
+  capacity.addEventListener('change', onSynchRooms);
+  timeIn.addEventListener('change', onSynchTime);
+  timeOut.addEventListener('change', onSynchTime);
 
-  window.form.adForm.addEventListener('submit', window.onSuccessHandler);
+  adForm.addEventListener('submit', window.onSuccessHandler);
 })();
